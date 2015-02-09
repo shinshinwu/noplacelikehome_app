@@ -5,6 +5,9 @@ require 'pp'
 helpers do
   def get_zillow_address_data(address, zipcode)
     address = URI.encode(address)
+    url = "http://www.zillow.com/webservice/GetDeepSearchResults.htm?zws-id=X1-ZWz1az0o6cmnm3_8b748&address=#{address}&citystatezip=#{zipcode}&rentzestimate=true"
+    puts url
+    puts ")" * 800
     response = HTTParty.get("http://www.zillow.com/webservice/GetDeepSearchResults.htm?zws-id=X1-ZWz1az0o6cmnm3_8b748&address=#{address}&citystatezip=#{zipcode}&rentzestimate=true")
     p response["searchresults"]["response"]
     if response["searchresults"]["response"]

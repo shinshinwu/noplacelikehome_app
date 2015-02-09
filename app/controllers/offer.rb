@@ -4,7 +4,7 @@ post '/api/offer' do
   params = JSON.parse(request.env["rack.input"].read)
   puts params
   puts "*" * 800
-  address_data = get_zillow_address_data(params["street_address"], params["zip"])
+  address_data = get_zillow_address_data(params["street_address"].gsub(" ", "+"), params["zip"])
   if address_data
     new_offer = Offer.create(price: params["offer_price"].to_i, street_address: params["street_address"], zip: params["zip"].to_i, bedrooms: address_data["bedrooms"])
     session[:id] = new_offer.id
@@ -15,7 +15,7 @@ post '/api/offer' do
     difference_in_months = calculate_difference_in_months(total_after_taxes, address_data[:monthly_market_value], params["current_monthly_rent"].to_i).to_s
     content_type :json
     { low_offer: calculate_low_offer(args), high_offer:
-    calculate_high_offer(address_data[:total_market_value]), total_after_taxes: total_after_taxes, difference_in_months: difference_in_months.to_i }.to_json
+    calculate_high_offer(address_data[:total_market_value]), total_after_taxes: total_after_taxes, difference_in_months: difference_in_months.to_i, original_offer: params["offer_price"].to_i}.to_json
   else
     content_type :json
     { error: "Address not found"}.to_json
