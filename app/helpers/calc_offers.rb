@@ -11,9 +11,9 @@ helpers do
 
   def calculate_low_offer(args) #market_value, current_rent, offer_price
     compensation_required = calculate_market_rate_difference(args[:monthly_market_value], args[:current_monthly_rent])
-    if compensation_required > 50_000
-      compensation_required = 50_000
-    end
+    # if compensation_required > 50_000
+    #   compensation_required = 50_000
+    # end
     return compensation_required
   end
 
